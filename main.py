@@ -3,8 +3,8 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 #-------------------------------------------------
 
-Ntrain = 100
-Ntest = 100
+Ntrain = 1000
+Ntest = 1000
 x_train = []
 y_train = []
 x_test = []
@@ -36,7 +36,7 @@ y_test = np.array(y_test)
 x_train = np.array(x_train)
 y_train = np.array(y_train)
 
-plt.scatter(x_train, y_train)
+
 
 
 model = tf.keras.models.Sequential([
@@ -46,12 +46,24 @@ model = tf.keras.models.Sequential([
     tf.keras.layers.Dense(1)
 ])
 
+
 loss_fn = tf.keras.losses.MeanSquaredError()
 learning_rate = 0.001
 
 model.compile(optimizer=tf.optimizers.Adam(learning_rate), loss=loss_fn)
-history = model.fit(x_train, y_train, batch_size=5, epochs=100, validation_split=0.2,)
+history = model.fit(x_train, y_train, batch_size=50, epochs=100, validation_split=0.2,)
 
+loss = model.evaluate(x_test, y_test)
+print(loss)
+
+plt.plot(history.history['loss'])
+plt.plot(history.history['val_loss'])
+plt.title('model loss')
+plt.ylabel('loss')
+plt.xlabel('epoch')
+plt.legend(['train', 'validate'], loc='upper right')
+plt.show()
+plt.scatter(x_train, y_train)
 y_pred = model.predict(x_test)
 plt.scatter(x_test, y_pred)
 
