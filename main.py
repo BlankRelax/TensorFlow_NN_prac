@@ -10,13 +10,13 @@ y_train = []
 x_test = []
 y_test = []
 gaus_Noise = tf.random.normal([Ntrain,1], 0,0.05, seed=2)
-xmax = np.pi*2
-xmin = 0
+xmax = 10
+xmin = -10
 #----------------------------------------------------
-
+a, b, c, d = 1,2,3,10
 def sim_sin(xmin, xmax):
     x =np.random.random()*(xmax-xmin)+xmin
-    y = np.sin(x)
+    y = a+(b*x)+(c*x**2)+(d*(x**3))
     return x, y
 #------------------------------------------------------
 for i in range(Ntrain):
@@ -51,7 +51,7 @@ loss_fn = tf.keras.losses.MeanSquaredError()
 learning_rate = 0.001
 
 model.compile(optimizer=tf.optimizers.Adam(learning_rate), loss=loss_fn)
-history = model.fit(x_train, y_train, batch_size=50, epochs=100, validation_split=0.2,)
+history = model.fit(x_train, y_train, batch_size=10, epochs=100, validation_split=0.2,)
 
 loss = model.evaluate(x_test, y_test)
 print(loss)
